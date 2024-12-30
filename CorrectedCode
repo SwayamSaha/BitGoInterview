@@ -1,0 +1,55 @@
+@Test(priority=3)
+	 public void getTxid() {
+		 
+		    int offset = 0;
+		     int interval = 25; // Increment per page
+		     int totalRecords = 2875; // Total number of records
+		     int totalpages = totalRecords / interval; // Calculate total pages
+	     boolean searchtx1=false;
+	     boolean searchtx2=false;
+	     
+	     String[] txids= {"96d92f03000f625a38bf8cb91c01188a02b7972238cc6c4e0c6f334cf755004d","6dd68336c085d5b7b694e2bf6f6c11bca589aea07b6f1c0232bd627c3d217074"};
+	     
+	
+    while(!searchtx1 && !searchtx2) {
+	     
+	     
+	     for(int i=0;i<=totalpages;i++) {
+    	
+    	 String offStr=String.valueOf(offset);
+		 Response response=given()
+						.pathParam("blockHash",blockHash)
+						.pathParam("index", offStr)
+						.when()
+						  .get(Routes.gettransaction);
+			 
+			 System.out.println(response.getBody().asString());
+			 
+		     Assert.assertEquals(response.statusCode(), 200);
+		     
+		    JSONArray jrr=new JSONArray(response.asString());
+		    
+		    for(int j=0;j<jrr.length();j++) {
+		    	
+			String txid=jrr.getJSONObject(j).getString("txid");
+		    
+				if(txid.equals(txids[0])) {
+				searchtx1=true;
+				break;
+			}
+			
+
+			if(txid.equals(txids[1])) {
+					searchtx2=true;
+					break;
+				}
+			}
+		    
+		    if (searchtx1 || searchtx2) {            // {{{{-----  Only This line was missing which was triggering the infinite loop ------}}}}}
+                break; 
+            }
+		 }
+
+	 offset+=interval;
+    }
+	}
