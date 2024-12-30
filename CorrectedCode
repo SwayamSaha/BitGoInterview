@@ -1,10 +1,10 @@
 @Test(priority=3)
 	 public void getTxid() {
 		 
-		    int offset = 0;
-		     int interval = 25; // Increment per page
-		     int totalRecords = 2875; // Total number of records
-		     int totalpages = totalRecords / interval; // Calculate total pages
+	    int offset = 0;
+	    int interval = 25; 
+	    int totalRecords = 2875; 
+	    int totalpages = totalRecords / interval;
 	     boolean searchtx1=false;
 	     boolean searchtx2=false;
 	     
